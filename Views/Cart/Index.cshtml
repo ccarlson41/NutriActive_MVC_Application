@@ -1,0 +1,83 @@
+﻿@model List<ProductModel>
+@using Online_store.Controllers;
+
+@{
+    ViewData["Title"] = "Products";
+
+    // Calculate subtotal
+    decimal subtotal = CartController.CalculateSubtotal(Model);
+
+    // Calculate tax
+    decimal tax = CartController.CalculateTax(subtotal);
+
+    // Calculate total
+    decimal total = CartController.CalculateGrandTotal(subtotal);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Cart"]</title>
+    <link rel="stylesheet" href="~/css/tables.css">
+    <!--
+    Description: Page responsible for displaying the cart using information from the ProductModel and also calculates the total price 
+    Last Updated: 5/10/24
+    -->
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price (Per Unit)</th>
+                <th>Quantity</th>
+                <th>Remove Products</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>$ @item.Price</td>
+                    <td>@item.NumInCart</td>
+                    <td>
+                        <form method="post" asp-action="RemoveFromCart" class="remove-from-cart-form">
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <input type="number" name="quantity" class="quantity" value="1" min="1" max="@item.NumInCart" />
+                            <button type="submit">Remove from Cart</button>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+
+    <div style="margin-top: 20px; color: white; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);">
+        <h2>Summary</h2>
+        <div>
+            Subtotal: $@subtotal
+        </div>
+        <div>
+            Tax (7.5%): $@tax
+        </div>
+        <div>
+            Total: $@total
+        </div>
+    </div>
+    <hr />
+
+
+    <div style="margin-top: 20px;">
+        <a href="@Url.Action("Index", "Checkout")" class="btn-custom" style="text-decoration: none;">Proceed to Checkout</a>
+    </div>
+</body>
+</html>
+

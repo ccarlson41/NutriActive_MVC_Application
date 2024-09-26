@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NutriActive Supplements</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Online_store.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/navbar.css" />
+    <!--
+    Description: Page responsible for displaying the navigational bar that is present on all the pages. It is also responsible for displaying the footer as well as the pop up after logging off. 
+    Last Updated: 5/10/24
+    -->
+    <style>
+        #logoffPopup, #logonPopup, #registerPopup {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+            #logoffPopup .modal-content, #logonPopup .modal-content, #registerPopup .modal-content {
+                background-color: #a77f4e;
+                padding: 20px;
+                border-radius: 5px;
+            }
+
+            #logoffPopup .close, #logonPopup .close, #registerPopup .close {
+                color: #fff;
+                font-size: 24px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                cursor: pointer;
+            }
+
+            #logoffPopup p, #logonPopup p, #registerPopup p {
+                color: #fff;
+                font-size: 16px;
+                margin-bottom: 0;
+            }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <img src="~/images/Nutri-ActiveLogo.png" class="navbar-logo mr-2" alt="Logo" style="margin-right: 10px;">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NutriActive Supplements</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Sale" asp-action="Index">Sale</a>
+                        </li>
+                        @await Html.PartialAsync("LoginPartial")
+                    </ul>
+                </div>
+            </div>
+            <a href="/Cart" class="cart-button" style="color: white;">Cart</a>
+            
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+    @{
+        var logoffParam = HttpContextAccessor.HttpContext?.Request.Query.ContainsKey("logoff") ?? false && HttpContextAccessor.HttpContext.Request.Query["logoff"] == "true";
+    }
+    @{
+        var logonParam = HttpContextAccessor.HttpContext?.Request.Query.ContainsKey("logon") ?? false && HttpContextAccessor.HttpContext.Request.Query["logon"] == "true";
+    }
+    @{
+        var registerParam = HttpContextAccessor.HttpContext?.Request.Query.ContainsKey("register") ?? false && HttpContextAccessor.HttpContext.Request.Query["register"] == "true";
+    }
+
+    @if (logoffParam)
+    {
+        <div id="logoffPopup" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>You are logged off. Login to continue shopping!</p>
+            </div>
+        </div>
+
+        <script>
+            var modal = document.getElementById("logoffPopup");
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onload = function () {
+                modal.style.display = "block";
+            }
+        </script>
+    }
+    @if (logonParam)
+    {
+        <div id="logonPopup" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>You are logged in. Enjoy your shopping!</p>
+            </div>
+        </div>
+
+        <script>
+            var modal = document.getElementById("logonPopup");
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onload = function () {
+                modal.style.display = "block";
+            }
+        </script>
+    }
+    @if (registerParam)
+    {
+        <div id="registerPopup" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Registration successful. Continue to Login!</p>
+            </div>
+        </div>
+
+        <script>
+            var modal = document.getElementById("registerPopup");
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+            window.onload = function () {
+                modal.style.display = "block";
+            }
+        </script>
+    }
+
+
+    <footer class="border-top footer text-muted page-specific-footer">
+        <div class="container" style="color: white;">
+            &copy; 2024 - NutriActive -
+            <a href="https://github.com/Amgad1123/ecommerce-aspnet-mvc-application" target="_blank" rel="noopener noreferrer">GitHub</a> -
+            <a href="https://twitter.com/nutriactivecorp" target="_blank" rel="noopener noreferrer">Twitter</a> -
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

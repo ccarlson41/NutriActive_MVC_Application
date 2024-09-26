@@ -1,0 +1,61 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/account.css">
+    <!--
+    Description: Page responsible for displaying the login using information from the UserModel
+    Last Updated: 4/25/24
+    -->
+</head>
+<body>
+
+    <div class="row loginForm">
+        <div class="col-md-8 offset-md-2">
+            <h2 style="color: white;">Welcome Back!</h2>
+            <p class="personal-text" style="color: white;">We're glad to see you again. Please login to continue.</p>
+            <form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
+                <h4 style="color: #8b572a;">
+                    Enter Your Credentials
+                </h4>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="form-group" style="color: #8b572a;">
+                    <label asp-for="Username" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Username" class="form-control" placeholder="Enter your username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="color: #8b572a;">
+                    <label asp-for="PasswordHash" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="PasswordHash" class="form-control" placeholder="Enter your password" />
+                        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-success" value="Login" />
+                    </div>
+                </div>
+            </form>
+            <a href="Register" style="color: white;">
+                New here? Click here to register!
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

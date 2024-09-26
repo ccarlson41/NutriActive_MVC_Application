@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ProductModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/tables.css" >
+    <!--
+    Description: Page responsible for displaying the products as a list of items displaying basic information as well as the ability to go further into detail by clicking a details button. 
+    Last Updated: 5/6/24
+    -->
+</head>
+<body>
+
+    <h1 style="color: white;">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <tbody>
+                <tr>
+                    <td colspan="5">
+                        <form asp-controller="Products" asp-action="Search" method="get">
+                            <input type="text" name="input" placeholder="Search Products">
+                            <button type="submit" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Search</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Stock Availability</th>
+                        <th>Learn More</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Price)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.QuantityInStock)</td>
+                            <td class="align-middle">
+                                <a asp-action="Details" asp-route-id="@item.ProductId">
+                                    <button type="button" class="btn-custom" style="text-decoration: none; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">View Details</button>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+            <hr />
+
+        </div>
+    </div>
+
+</body>
+</html>

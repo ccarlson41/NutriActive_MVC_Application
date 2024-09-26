@@ -1,0 +1,56 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/account.css">
+    <!--
+    Description: Page responsible for displaying the register using information from the UserModel
+    Last Updated: 4/25/24
+    -->
+</head>
+<body>
+
+    <div class="row loginForm">
+        <div class="col-md-8 offset-md-2">
+            <h2 style="color: white;">Register Now!</h2>
+            <p class="personal-text" style="color: white;">Let's get started with your new account.</p>
+            <form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal" role="form">
+                <h4 style ="color: #8b572a;">Create a New Account</h4>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" style="color: #8b572a;">
+                    <label asp-for="Username" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Username" class="form-control" placeholder="Choose a username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group" style="color: #8b572a;">
+                    <label asp-for="PasswordHash" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="PasswordHash" class="form-control" placeholder="Create a password" />
+                        <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-success" value="Register" />
+                    </div>
+                </div>
+            </form>
+            <a href="Login" style="color: white;">
+                Already a Member? Click here to login!
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

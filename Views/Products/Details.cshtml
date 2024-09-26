@@ -1,0 +1,50 @@
+﻿@model ProductModel
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/details.css">
+    <link rel="stylesheet" href="~/css/addbtn.css">
+    <!--
+    Description: Page responsible for displaying further details about the product such as their image, description, and other important information. There is also an add to cart feature. 
+    Last Updated: 5/10/24
+    -->
+</head>
+<body>
+
+    <div class="container">
+        <h1>Product Details</h1>
+
+        <img src="~/images/@(Model.GetNameNoSpace()).jpg" alt="Product Image" class="product-image">
+
+        @if (Model != null)
+        {
+            <ul class="product-details">
+                <li>Name: @Model.Name</li>
+                <li>Description: @Model.Description</li>
+                <li>Price: @Model.Price.ToString("C")</li>
+                <li>Quantity In Stock: @Model.QuantityInStock</li>
+            </ul>
+            <div>
+
+            </div>
+            <form method="post" action="/Cart/AddToCart" class="add-to-cart-form">
+                <input type="hidden" name="productId" value="@Model.ProductId" />
+                <div class="quantity">
+                    <input type="number" name="quantity" value="1" min="1" max="@Model.QuantityInStock" />
+                </div>
+                <button type="submit" class="btn-custom">Add to Cart</button>
+            </form>
+        }
+        else
+        {
+            <p class="error-message">Product not found!</p>
+        }
+        <a href="/Products" class="btn-custom">Go Back To Products</a>
+    </div>
+</body>
+</html>

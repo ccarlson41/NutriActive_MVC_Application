@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ProductModel>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/carousel.css">
+    <!--
+    Description: Page responsible for displaying the home page as well as featured products through a carousel 
+    Last Updated: 5/5/24
+    -->
+</head>
+<body>
+
+    <div class="jumbotron">
+        <img src="~/images/Nutri-ActiveLogo.png" alt="NutriActive Supplements Logo" class="logo" style="width: 2in">
+        <h1>Welcome to NutriActive Supplements</h1>
+        <p class="catchphrase">"Enhancing the Mind and Body since 2024"</p>
+        <a href="/Products" class="btn-custom" style="color: white;">Go to All Products</a>
+    </div>
+
+    <hr />
+
+    <section aria-label="Featured Products">
+        <h1 align="center" style="color: white; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);">Featured Products</h1>
+        <p align="center" style="color: white; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);">Our Top Picks!</p>
+
+        <hr />
+
+        <!--
+        Carousel works by displaying products pulled from database that have a quantity that is higher than 200 in stock 
+        -->
+        <div class="carousel">
+            <button class="carousel-button prev" onclick="prevSlide()">&#8678;</button>
+            <button class="carousel-button next" onclick="nextSlide()">&#8680;</button>
+            <ul>
+                @foreach (var product in Model)
+                {
+                    <li class="slide" data-active>
+                        <img src="~/images/@(product.GetNameNoSpace()).jpg" alt="Featured Products" />
+                        <div class="carousel-caption" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+                            <h3>@product.Name</h3>
+                            <p>@product.Description</p>
+                            <p>@product.Price</p>
+                            @{
+                                var prodID = product.ProductId;
+                                var detailsUrl = "/Products/Details/" + prodID;
+                            }
+                            <a href="@detailsUrl" class="btn-custom" style="color: white;">Details</a>
+                        </div>
+                    </li>
+                }
+
+
+            </ul>
+        </div>
+    </section>
+
+    <hr />
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(n) {
+            slides[currentSlide].removeAttribute('data-active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].setAttribute('data-active', '');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        showSlide(currentSlide);
+    </script>
+
+</body>
+</html>
